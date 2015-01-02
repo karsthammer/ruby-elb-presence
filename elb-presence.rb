@@ -1,9 +1,16 @@
 #!/usr/bin/env ruby
 
+require 'net/http'
 require 'aws-sdk-core'
 require 'optparse'
 
-options = {}
+options = {
+	access_key_id: ENV["AWS_ACCESS_KEY"],
+	secret_access_key: ENV["AWS_SECRET_KEY"],
+	region: ENV["AWS_REGION"],
+	load_balancer_name: ENV["ELB_NAME"],
+}
+
 OptionParser.new do |opts|
   opts.banner = "Usage: elb-presence.rb [options]"
 
@@ -27,6 +34,10 @@ OptionParser.new do |opts|
     options[:instance_id] = v
   end
 end.parse!
+
+if !options[:instance_id]
+	options[:instance_id] = Net::HTTP.get(URI('http://169.254.169.254/latest/meta-data/instance-id'))
+end
 
 elasticloadbalancing = Aws::ElasticLoadBalancing::Client.new(
   region: options[:region],
