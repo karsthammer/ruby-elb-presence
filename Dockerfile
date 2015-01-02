@@ -6,4 +6,4 @@ CMD bundle install
 
 ADD elb-presence.rb /bin/elb-presence
 
-CMD /bin/elb-presence
+CMD ["bundle", "exec", "/bin/elb-presence"]
