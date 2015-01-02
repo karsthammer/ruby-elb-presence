@@ -1,9 +1,10 @@
-FROM dockerfile/ruby
+FROM ubuntu:14.04
 
-ADD Gemfile Gemfile
-ADD Gemfile.lock Gemfile.lock
-CMD bundle install
+RUN apt-get update && apt-get install ruby && gem install bundler --no-ri --no-rdoc
 
-ADD elb-presence.rb /bin/elb-presence
+ADD Gemfile Gemfile.lock /app
+WORKDIR /app
+RUN bundle install --deployment
 
-CMD ["bundle", "exec", "/bin/elb-presence"]
+ADD elb-presence.rb /app/elb-presence.rb
+CMD bundle exec elb-presence.rb
