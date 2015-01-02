@@ -7,4 +7,4 @@ WORKDIR /app
 RUN bundle install --deployment
 
 ADD elb-presence.rb /app/elb-presence.rb
-CMD bundle exec elb-presence.rb
+CMD /usr/bin/env ruby /app/elb-presence.rb

@@ -1,5 +1,8 @@
 #!/usr/bin/env ruby
 
+require 'rubygems'
+require 'bundler/setup'
+
 require 'net/http'
 require 'aws-sdk-core'
 require 'optparse'
